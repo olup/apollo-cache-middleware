@@ -2,20 +2,35 @@
 
 const NodeCache = require("node-cache");
 const sha256 = require("hash.js/lib/hash/sha/256");
-const redis = "redis";
+const redis = require("redis");
 
 // logger
 let log = () => {};
 
-const createStore = userOptions => {
-  const defaultOptions = {
-    memory: true,
-    log: false
-  };
-  const options = { ...defaultOptions, ...userOptions };
-
-  if (options.memory) {
-    log("Cache initiated with NODE-CACHE");
+const createStore = options => {
+  if (options.redis) {
+    const stdTTL =
+      typeof options.redis === "object" ? options.redis.stdTTL : undefined;
+    const redisOptions = options.redis === "object" ? options.redis : undefined;
+    const client = redis.createClient(redisOptions);
+    cache = {
+      get: key =>
+        new Promise((res, rej) =>
+          client.get(key, (err, value) => {
+            if (err) return rej(value);
+            return res(value);
+          })
+        ),
+      set: (key, value, ttl) =>
+        new Promise((res, rej) =>
+          client.set(key, value, "EX", ttl || stdTTL, err => {
+            if (err) return rej(err);
+            return res();
+          })
+        )
+    };
+    log("Cache initiated with REDIS");
+  } else if (options.memory) {
     const client = new NodeCache(options.memory);
     cache = {
       get: key =>
@@ -33,27 +48,7 @@ const createStore = userOptions => {
           })
         )
     };
-  } else if (options.redis) {
-    log("Cache initiated with REDIS");
-    const stdTTL =
-      typeof options.redis === "object" ? options.redis.stdTTL : undefined;
-    const client = redis.createClient(options.redis);
-    cache = {
-      get: key =>
-        new Promise((res, rej) =>
-          client.get(key, (err, value) => {
-            if (err) return rej(value);
-            return res(value);
-          })
-        ),
-      set: (key, value, ttl) =>
-        new Promise((res, rej) =>
-          client.set(key, value, "EX", ttl || stdTTL, err => {
-            if (err) return rej(err);
-            return res();
-          })
-        )
-    };
+    log("Cache initiated with NODE-CACHE");
   }
   return cache;
 };
@@ -68,12 +63,21 @@ const hashPostBody = query => {
 };
 
 // Main function
-module.exports = options => {
+module.exports = userOptions => {
+  const defaultOptions = {
+    memory: true,
+    log: false
+  };
+
+  const options = { ...defaultOptions, ...userOptions };
+
   // set logger
   if (options.log)
     log = (...datas) => {
       console.log(...datas);
     };
+
+  log(options);
 
   // create cache according to options
   const store = createStore(options);
