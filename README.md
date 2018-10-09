@@ -28,6 +28,7 @@ server.applyMiddleware({ app });
 
 Options possibles are :
 
-| memory | Bool / Object | Set the cache to memory. If an object, will be passed to the node-cache constructor |
-| redis | Bool / Object | Set the cache to redis. If an object, will be passed to the redis client constructor, plus one more argument (stdTTL) to set standard time to live |
-| log | Bool | Activate logs |
+| memory | Bool / Object | Set the cache to memory. If an object, will be passed to the node-cache constructor                                                                |
+| ------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| redis  | Bool / Object | Set the cache to redis. If an object, will be passed to the redis client constructor, plus one more argument (stdTTL) to set standard time to live |
+| log    | Bool          | Activate logs                                                                                                                                      |
