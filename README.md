@@ -33,3 +33,11 @@ Options possibles are :
 | memory   | Bool / Object | Set the cache to memory. If an object, will be passed to the node-cache constructor                                                                |
 | redis    | Bool / Object | Set the cache to redis. If an object, will be passed to the redis client constructor, plus one more argument (stdTTL) to set standard time to live |
 | log      | Bool          | Activate logs                                                                                                                                      |
+
+
+Every request can use the `Cache-control` header to either set a TTL for the present request (in seconds), or to disable caching altogether by setting it to `no-cache`
+
+TODO :
+
+- Follow Apollo cache hint in queries for TTL
+- cache GET request with Apollo's CDN integration
