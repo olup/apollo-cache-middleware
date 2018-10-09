@@ -1,0 +1,31 @@
+{
+  "name": "apollo-cache-middleware",
+  "version": "1.0.0",
+  "description": "An express middleware to offer full query caching for apollo graphql server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olup/apollo-cache-middleware.git"
+  },
+  "keywords": [
+    "apollo",
+    "graphql",
+    "cache",
+    "middleware",
+    "express"
+  ],
+  "author": "Loup Topalian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olup/apollo-cache-middleware/issues"
+  },
+  "homepage": "https://github.com/olup/apollo-cache-middleware#readme",
+  "dependencies": {
+    "hash.js": "^1.1.5",
+    "node-cache": "^4.2.0",
+    "redis": "^2.8.0"
+  }
+}
