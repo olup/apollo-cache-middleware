@@ -1,6 +1,6 @@
 {
   "name": "apollo-cache-middleware",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "An express middleware to offer full query caching for apollo graphql server",
   "main": "index.js",
   "scripts": {
